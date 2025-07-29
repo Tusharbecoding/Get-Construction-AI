@@ -27,16 +27,19 @@ export default function Chat({ document }: ChatProps) {
     setInput("");
 
     try {
-      const response = await fetch("http://localhost:8000/api/chat", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          message: input,
-          document_id: document.id,
-        }),
-      });
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/chat`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            message: input,
+            document_id: document.id,
+          }),
+        }
+      );
 
       if (!response.ok) {
         throw new Error("Failed to get response");
