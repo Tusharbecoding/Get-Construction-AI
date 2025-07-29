@@ -107,31 +107,16 @@ export default function Chat({ document }: ChatProps) {
 
         {messages.map((message) => (
           <div key={message.id}>
-            <div className="flex justify-end mb-2">
-              <div className="bg-blue-500 text-white p-3 rounded-lg max-w-xs">
-                {message.message}
+            {message.isUser ? (
+              <div className="flex justify-end mb-2">
+                <div className="bg-blue-500 text-white p-3 rounded-lg max-w-xs">
+                  {message.message}
+                </div>
               </div>
-            </div>
-            {!message.isUser && (
+            ) : (
               <div className="flex justify-start">
                 <div className="bg-gray-100 p-3 rounded-lg max-w-lg">
-                  <p className="mb-2">{message.response}</p>
-
-                  {message.sources && message.sources.length > 0 && (
-                    <div className="mt-3 pt-3 border-t">
-                      <p className="text-xs font-medium text-gray-600 mb-2">
-                        Sources:
-                      </p>
-                      {message.sources.map((source, idx) => (
-                        <div key={idx} className="text-xs text-gray-500 mb-1">
-                          <span className="font-medium">
-                            Page {source.page}:
-                          </span>
-                          <span className="ml-1">{source.content_preview}</span>
-                        </div>
-                      ))}
-                    </div>
-                  )}
+                  <p className="mb-2 text-black">{message.response}</p>
                 </div>
               </div>
             )}
@@ -140,7 +125,9 @@ export default function Chat({ document }: ChatProps) {
 
         {loading && (
           <div className="flex justify-start">
-            <div className="bg-gray-100 p-3 rounded-lg">Thinking...</div>
+            <div className="bg-gray-100 text-black p-3 rounded-lg">
+              Thinking...
+            </div>
           </div>
         )}
       </div>
