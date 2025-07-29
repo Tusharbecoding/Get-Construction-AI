@@ -16,6 +16,14 @@ This application enables users to:
 - "What type of cooktop is specified in the kitchen?"
 - "What are the dimensions of the master bedroom?"
 
+## Screenshots
+
+![Bedroom Sizing Query](1.png)
+
+![Weather Stripping Query](2.png)
+
+![Kitchen Cooktop Query](3.png)
+
 ## System Architecture & Reasoning
 
 ### High-Level Design Philosophy
