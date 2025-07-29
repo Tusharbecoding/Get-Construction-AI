@@ -4,7 +4,7 @@ import { useState } from "react";
 import { ChatMessage, Document } from "@/types";
 
 interface ChatProps {
-  document: Document;
+  document: Document | null;
 }
 
 export default function Chat({ document }: ChatProps) {
@@ -13,7 +13,7 @@ export default function Chat({ document }: ChatProps) {
   const [loading, setLoading] = useState(false);
 
   const sendMessage = async () => {
-    if (!input.trim() || loading) return;
+    if (!input.trim() || loading || !document) return;
 
     const userMessage: ChatMessage = {
       id: Date.now().toString(),
@@ -79,16 +79,29 @@ export default function Chat({ document }: ChatProps) {
   return (
     <div className="flex flex-col h-[600px] border rounded-lg bg-white">
       <div className="border-b p-4 bg-gray-500">
-        <h3 className="font-medium">Chat about: {document.filename}</h3>
+        <h3 className="font-medium">
+          {document ? `Chat about: ${document.filename}` : "Chat Interface"}
+        </h3>
       </div>
       <div className="flex-1 overflow-y-auto p-4 space-y-4">
         {messages.length === 0 && (
           <div className="text-center text-gray-500 mt-8">
-            <p>Ask questions about your construction document!</p>
-            <p className="text-sm mt-2">
-              Try: "What's the size of the bathtub?" or "What type of cooktop is
-              used?"
-            </p>
+            {document ? (
+              <>
+                <p>Ask questions about your construction document!</p>
+                <p className="text-sm mt-2">
+                  Try: "What's the size of the bathtub?" or "What type of
+                  cooktop is used?"
+                </p>
+              </>
+            ) : (
+              <>
+                <p>Upload a document to start chatting!</p>
+                <p className="text-sm mt-2">
+                  The chat interface will be enabled once you upload a document.
+                </p>
+              </>
+            )}
           </div>
         )}
 
@@ -138,13 +151,17 @@ export default function Chat({ document }: ChatProps) {
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyPress={handleKeyPress}
-            placeholder="Ask a question about the document..."
-            className="flex-1 border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-black"
-            disabled={loading}
+            placeholder={
+              document
+                ? "Ask a question about the document..."
+                : "Upload a document to enable chat..."
+            }
+            className="flex-1 border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-black disabled:bg-gray-100 disabled:cursor-not-allowed"
+            disabled={loading || !document}
           />
           <button
             onClick={sendMessage}
-            disabled={loading || !input.trim()}
+            disabled={loading || !input.trim() || !document}
             className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             Send
