@@ -71,8 +71,10 @@ async def chat(message: ChatMessage):
     
     doc = documents[message.document_id]
     
+    system_prompt = """You are a construction document expert. Answer questions about this construction document based on what you can see in the images. Be specific about measurements, materials, and locations."""
+
     content_parts = [
-        "You are a construction document expert. Answer questions about this construction document based on what you can see in the images. Be specific about measurements, materials, and locations.",
+        system_prompt,
         f"Question: {message.message}"
     ]
     
@@ -84,7 +86,11 @@ async def chat(message: ChatMessage):
     try:
         response = client.models.generate_content(
             model="gemini-1.5-flash",
-            contents=content_parts
+            contents=content_parts,
+            config=types.GenerateContentConfig(
+                temperature=0.1,
+                top_p=0.8
+            )
         )
         
         return {
