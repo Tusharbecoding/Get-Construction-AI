@@ -3,4 +3,4 @@ uvicorn
 python-multipart
 PyMuPDF
 google-genai
-Pillow
+python-dotenv
